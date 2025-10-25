@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Employees{% endblock %}
+
+{% block content %}
+<h1>Employee Management</h1>
+
+<div class="card">
+    <h2>Add New Employee</h2>
+    <form action="{{ url_for('add_employee') }}" method="POST">
+        <div class="form-group">
+            <label>Name:</label>
+            <input type="text" name="name" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" name="email" required>
+        </div>
+        
+        <button type="submit">Add Employee</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>All Employees</h2>
+    {% if employees %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <td>{{ employee[0] }}</td>
+                    <td>{{ employee[1] }}</td>
+                    <td>{{ employee[2] }}</td>
+                    <td>
+                        <a href="{{ url_for('delete_employee', employee_id=employee[0]) }}" 
+                           class="btn btn-danger" 
+                           onclick="return confirm('Are you sure you want to delete {{ employee[1] }}? This will also delete their leave requests.')">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No employees found.</p>
+    {% endif %}
+</div>
+{% endblock %}

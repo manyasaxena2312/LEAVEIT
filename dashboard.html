@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_employees }}</div>
+        <div>Total Employees</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ total_requests }}</div>
+        <div>Total Leave Requests</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ pending_requests }}</div>
+        <div>Pending Requests</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Recent Leave Requests</h2>
+    {% if recent_requests %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in recent_requests %}
+                <tr class="{{ request[5] }}">
+                    <td>{{ request[1] }}</td>
+                    <td>{{ request[2] }}</td>
+                    <td>{{ request[3] }}</td>
+                    <td>{{ request[4] }}</td>
+                    <td>{{ request[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No leave requests found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Leave Requests{% endblock %}
+
+{% block content %}
+<h1>Leave Requests</h1>
+
+<div class="card">
+    <h2>New Leave Request</h2>
+    <form action="{{ url_for('add_leave_request') }}" method="POST">
+        <div class="form-group">
+            <label>Employee:</label>
+            <select name="employee_id" required>
+                <option value="">Select Employee</option>
+                {% for employee in employees %}
+                <option value="{{ employee[0] }}">{{ employee[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Start Date:</label>
+            <input type="date" name="start_date" required>
+        </div>
+        
+        <div class="form-group">
+            <label>End Date:</label>
+            <input type="date" name="end_date" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Reason:</label>
+            <textarea name="reason" rows="3" required></textarea>
+        </div>
+        
+        <button type="submit">Submit Leave Request</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>All Leave Requests</h2>
+    {% if leave_requests %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Employee</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in leave_requests %}
+                <tr class="{{ request[5] }}">
+                    <td>{{ request[0] }}</td>
+                    <td>{{ request[1] }}</td>
+                    <td>{{ request[2] }}</td>
+                    <td>{{ request[3] }}</td>
+                    <td>{{ request[4] }}</td>
+                    <td>{{ request[5] }}</td>
+                    <td>
+                        {% if request[5] == 'pending' %}
+                            <a href="{{ url_for('update_status', request_id=request[0], status='approved') }}" class="btn btn-success">Approve</a>
+                            <a href="{{ url_for('update_status', request_id=request[0], status='rejected') }}" class="btn btn-danger">Reject</a>
+                        {% else %}
+                            <span>{{ request[5]|title }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No leave requests found.</p>
+    {% endif %}
+</div>
+{% endblock %}

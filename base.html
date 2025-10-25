@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>leaveIT - {% block title %}Leave Management{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        
+        .navbar { background: #2c3e50; color: white; padding: 1rem; }
+        .navbar h1 { display: inline; margin-right: 2rem; }
+        .nav-links { display: inline; }
+        .nav-links a { color: white; text-decoration: none; margin: 0 1rem; padding: 0.5rem; }
+        .nav-links a:hover { background: #34495e; border-radius: 3px; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        
+        .flash-messages { margin: 1rem 0; }
+        .flash-success { background: #d4edda; color: #155724; padding: 0.75rem; border-radius: 4px; }
+        .flash-error { background: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 4px; }
+        
+        .card { background: white; border: 1px solid #ddd; border-radius: 5px; padding: 1.5rem; margin: 1rem 0; }
+        .form-group { margin: 1rem 0; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 3px; }
+        button, .btn { background: #3498db; color: white; padding: 0.5rem 1rem; border: none; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-block; }
+        .btn-danger { background: #e74c3c; }
+        .btn-success { background: #27ae60; }
+        .btn-warning { background: #f39c12; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; }
+        th { background-color: #f8f9fa; }
+        .pending { background-color: #fff3cd; }
+        .approved { background-color: #d4edda; }
+        .rejected { background-color: #f8d7da; }
+        
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .stat-card { background: white; padding: 1.5rem; border-radius: 5px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #2c3e50; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>leaveIT</h1>
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('view_leave_requests') }}">Leave Requests</a>
+            <a href="{{ url_for('view_employees') }}">Employees</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
